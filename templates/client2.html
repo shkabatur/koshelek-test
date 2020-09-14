@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>  
+window.addEventListener("load", function(evt) {
+
+    var ws;
+    var print = function(message) {
+        var d = document.createElement("div");
+        d.textContent = message;
+        output.appendChild(d);
+    };
+        if (ws) {
+            return false;
+        }
+        ws = new WebSocket("{{.}}");
+        ws.onopen = function(evt) {
+            print("Connected to the server");
+            print("Waiting for messages...")
+        }
+        ws.onclose = function(evt) {
+            print("Disconnected from the server");
+            ws = null;
+        }
+        ws.onmessage = function(evt) {
+			let msg = JSON.parse(evt.data)
+            print("New Message: " + msg);
+        }
+        ws.onerror = function(evt) {
+            print("ERROR: " + evt.data);
+        }
+        return false;
+
+});
+</script>
+</head>
+<body>
+</td><td valign="top" width="50%">
+<div id="output"></div>
+</td></tr></table>
+</body>
+</html>
